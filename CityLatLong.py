@@ -46,13 +46,19 @@ class CityLatLong():
         nominatim = Nominatim()
         loclist = data['location'].unique()
         locdict = {}
-
+        
+        # add progress bar since process can take a while with many entries
+        search = st.progress(0)
+        length = len(loclist)
+        
         # iterate over cities in set to get their lat and long and add to dict
-        for city in loclist:
+        for i, city in enumerate(loclist):
             try:
                 city_json = nominatim.query(city).toJSON()[0]
             except IndexError:
                 city_json = {"lat" : None, "lon" : None}
+            # progress the bar
+            search.progress(i/length + 1)
                 
             locdict[city] = [city_json["lat"], city_json["lon"]]
                 
@@ -66,6 +72,9 @@ class CityLatLong():
         data[['Lat','Long']] = data['location'].map(locdict).to_list()
         
         data.drop('location', axis=1, inplace=True)
+        
+        # add success output to signal program completion
+        st.success('Coordinates Located and Output to File')
         
         return self.filename, data
 #-----------------------------------------------------------------------------    
@@ -90,7 +99,7 @@ def download_csv(dataframe, filename, display_text, index=False):
     st.markdown(linko, unsafe_allow_html=True)
 #-----------------------------------------------------------------------------    
 if uploaded_file:
-    run    = st.button('Run', help='hover_text')
+    run    = st.button('Run', help='Find Coordinates')
     if run:
         fname, new = CityLatLong(uploaded_file).run()
         st.title('Download CSV output file')
