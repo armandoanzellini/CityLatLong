@@ -71,6 +71,13 @@ class CityLatLong():
         # take returned dictionary and add lat and long to dataframe
         data[['Lat','Long']] = data['location'].map(locdict).to_list()
         
+        # find list of cities failed in search and print for user info
+        failed_lst = data[data[['Lat','Long']].isna()]
+        
+        st.markdown('**The following cities could not be found:**')
+        for entry in failed_lst['location']:
+            st.markdown(entry)
+        
         data.drop('location', axis=1, inplace=True)
         
         # add success output to signal program completion
