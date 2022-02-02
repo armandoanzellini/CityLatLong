@@ -33,8 +33,7 @@ class CityLatLong():
             df = pd.read_csv(uploaded_file)  
             filename = filename.strip('.csv')
         
-        # df = pd.read_excel("c:\\Users\\aanzellini\\OneDrive\\Documents\\Academic\\Dissertation\\Bass Collection\\DonorResidenceCityTime.xlsx")
-        
+        # create column to be used for searching
         df['location'] = df['City'] + ', ' + df['State'] + ', ' + df['Country']
         
         self.data     = df
@@ -61,7 +60,8 @@ class CityLatLong():
             search.progress((i+1)/length)
                 
             locdict[city] = [city_json["lat"], city_json["lon"]]
-            
+        
+        # find list of cities failed in search and print for user info    
         st.markdown('**The following cities could not be found:**')
         for key, val in locdict.items():
             if None in val:
@@ -76,13 +76,7 @@ class CityLatLong():
         # take returned dictionary and add lat and long to dataframe
         data[['Lat','Long']] = data['location'].map(locdict).to_list()
         
-        # find list of cities failed in search and print for user info
-        failed_lst = data[data[['Lat','Long']].isna()]
-        
-        st.markdown('**The following cities could not be found:**')
-        for entry in failed_lst['location']:
-            st.markdown(entry)
-        
+        # drop the added column that was used only for the search
         data.drop('location', axis=1, inplace=True)
         
         # add success output to signal program completion
