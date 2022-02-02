@@ -58,7 +58,7 @@ class CityLatLong():
             except IndexError:
                 city_json = {"lat" : None, "lon" : None}
             # progress the bar
-            search.progress(i/length + 1)
+            search.progress((i+1)/length)
                 
             locdict[city] = [city_json["lat"], city_json["lon"]]
                 
