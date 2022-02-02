@@ -33,7 +33,7 @@ class CityLatLong():
             df = pd.read_csv(uploaded_file)  
             filename = filename.strip('.csv')
         
-        # df = pd.read_excel("D:\\Users\\Armando\\OneDrive\\Documents\\Academic\\Dissertation\\Bass Collection\\DonorResidenceCityTime.xlsx")
+        # df = pd.read_excel("c:\\Users\\aanzellini\\OneDrive\\Documents\\Academic\\Dissertation\\Bass Collection\\DonorResidenceCityTime.xlsx")
         
         df['location'] = df['City'] + ', ' + df['State'] + ', ' + df['Country']
         
@@ -61,6 +61,11 @@ class CityLatLong():
             search.progress((i+1)/length)
                 
             locdict[city] = [city_json["lat"], city_json["lon"]]
+            
+        st.markdown('**The following cities could not be found:**')
+        for key, val in locdict.items():
+            if None in val:
+                st.markdown(f'{key}')
                 
         return locdict
     #-----------------------------------------------------------------------------  
