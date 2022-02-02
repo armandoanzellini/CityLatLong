@@ -20,10 +20,6 @@ st.markdown('Ensure the file has column names titled City, State, and Country \
 uploaded_file = st.file_uploader("Upload single XLSX or CSV file...", 
                                                   type=["xlsx", "csv"])
 
-# uploaded_file = "C:\\Users\\aanzellini\\OneDrive\\Documents\\Academic\\Dissertation\\Bass Collection\\DonorResidenceAdapted.xlsx"
-
-
-
 class CityLatLong():
     def __init__(self, file):
         self.file = file
